@@ -1,6 +1,5 @@
 import csv
 import operator
-import os
 import pandas as pd
 
 #         adult [0];  "homepage"   [1]; "id"       [2]; "imdb_id" [3]; "original_language"  [4]; "original_title"  [5]; "overview"      [6];"popularity" [7]
@@ -38,7 +37,7 @@ class loader:
               count1 += 1.0
               if arr1[16+i] == arr2[i]:
                   countEqual += 1.0
-      if (countEqual/count1) ==1.0: return True
+      if (countEqual/count1) == 1.0: return True
       return False
 
   def best10_theme_movies(self,movieIds,path):
@@ -46,7 +45,7 @@ class loader:
           reader = csv.reader(ifile, delimiter=",")
           rowCount = 0;
           passed  = True
-          filmes = films = res = ids = []
+          filmes = films = []
           for row in reader:
               if rowCount == 0: rowCount +=1
               elif row[2] in movieIds:
@@ -55,44 +54,29 @@ class loader:
                       reader2 = csv.reader(ifile2, delimiter=",")
                       for row2 in reader2:
                           if rowCount == 1: rowCount += 1
-                          elif self.comparacao_percentual(row2, row[16:36]):  # se semelhança for superior a 60% adiciona
-                              films.append((row2, row2[14],row[2]))
-      print("Removing repeated");
-      passed = True
-      print(len(films))
+                          elif self.comparacao_percentual(row2, row[16:36]):  # se tiver os mesmos temas adiciona
+                              films.append((row2[2],row2[13],row2[14]))
+      print("\n\n##----------## Removing repeated ##----------##\n\n");
+      tam = len(films)
       rowCount = 0
+      films.sort(key=lambda tup: tup[2],reverse=True)
       for (a, b, c) in films:
-          if c in ids:
-            rowCount +=0
-          else:
-              ids.append(c)
-              filmes.append((a,b))
+          if a not in movieIds:
+              movieIds.append(a)
+              filmes.append((a, b, c))
           rowCount += 1
-          if rowCount == 100: print("DEVIA TER ACABADO    100")
-          elif rowCount == 1000: print("DEVIA TER ACABADO   1000")
-          elif rowCount == 10000: print("DEVIA TER ACABADO 10000")
-          elif rowCount == 20000: print("DEVIA TER ACABADO 20000")
-          elif rowCount == 30000: print("DEVIA TER ACABADO 30000")
-          elif rowCount == 40000: print("DEVIA TER ACABADO 40000")
-          elif rowCount == 50000: print("DEVIA TER ACABADO 50000")
-          elif rowCount == 60000: print("DEVIA TER ACABADO 60000")
-          elif rowCount == 70000: print("DEVIA TER ACABADO 70000")
-          elif rowCount == 80000: print("DEVIA TER ACABADO 80000")
-          elif rowCount == 90000: print("DEVIA TER ACABADO 90000")
-      print("fim")
-      srt = sorted(filmes,key = lambda x: x[1],reverse=True)
-      for(a,b) in srt:
-          res.append(a)
-      return res[1:11]
+          if rowCount == tam: break
+      return filmes
+
 
 
   def theme_loader(self,userId,path_user,path_movies):
       #guarda userId,movieId,rating,timestamp
-      print("Retrieving User Preferences:")
+      print("\n\n\tRetrieving User Preferences:\n\n")
       user_preferences = self.user_ratings_loader(userId,path_user)
 
       print("##----------------## divisor ##----------------##")
-      print("Retrieving User Probable Preferences:")
+      print("     Retrieving User Probable Preferences:")
       good_films = res = []
       for rating in user_preferences:
           if float(rating[2]) >= 4: # gostou

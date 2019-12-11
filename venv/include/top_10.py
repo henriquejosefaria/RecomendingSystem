@@ -14,8 +14,9 @@ def personalized_theam_loader():
     l = loader()
     userId = 10
     preferences = l.theme_loader(userId,"small_ratings.csv","movies_metadata.csv")
+    print("\n\n##-------## Preparing Response ##-------##\n\n");
     for i in range(1,11):
-        print(preferences[i-1])
+        print(preferences[i])
 
 def colab():
     l = loader()
