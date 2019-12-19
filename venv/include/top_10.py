@@ -5,7 +5,8 @@ def main():
     #top_10()                    #funcional
     #personalized_theam_loader() #funcional
     #users_colab()               #funcional
-    language_filter()
+    #language_filter()
+    best_20Peers()
 
 def top_10():
     l = loader()
@@ -31,6 +32,10 @@ def language_filter():
     preferences = l.movie_per_language(language,"movies_metadata.csv")
     print(preferences)
 
+def best_20Peers():
+    l = loader()
+    userId = 10
+    x = l.best_20Peers(userId,"small_ratings.csv","movies_metadata.csv")
 
 if __name__ == "__main__":
   main()

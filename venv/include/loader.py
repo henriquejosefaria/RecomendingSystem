@@ -14,6 +14,7 @@ class loader:
     def __init__(self):
         self.path = None
 
+    # Devolve os 10 filmes mais bem cotados por especialistas de sempre
     def orderedLoader(self, path):
         ifile = open(path, "r")
         reader = csv.reader(ifile, delimiter=",")
@@ -33,7 +34,7 @@ class loader:
                 a.append(row)
         return a
 
-    # comprara igualdade de 2 arrays
+    # comprara igualdade de 2 arrays de inteiros (usado para verificar se dois filmes são compatíveis em gênero)
     def comparacao_percentual(self, arr1, arr2):
         count1 = 0.0
         countEqual = 0.0
@@ -44,6 +45,7 @@ class loader:
         if (countEqual / count1) == 1.0: return True
         return False
 
+    # Procura os 10 filmes mais bem cotados cujo género seja o mesmo dos filmes vistos pelo utilizador e dos quais este gostou
     def best10_theme_movies(self, movieIds, path):
         with open(path, "r") as ifile:
             reader = csv.reader(ifile, delimiter=",")
@@ -74,6 +76,7 @@ class loader:
             if rowCount == tam: break
         return filmes
 
+    # Seletor dos filmes vistos pelo utilizador dos quais este gostou (>= 4)
     def theme_loader(self, userId, path_user, path_movies):
         # guarda userId,movieId,rating,timestamp
         print("\n\n\tRetrieving User Preferences:\n\n")
@@ -87,6 +90,7 @@ class loader:
                 good_films.append(rating[1])
         return self.best10_theme_movies(good_films, path_movies)
 
+    # Coleciona todos os filmes vistos por todos os utilizadores e apresenta os 10 mais bem cotados por estes
     def colab_filtering(self, users_path, movies_path):
 
         column_names = ['userId', 'movieId', 'rating', 'timestamp']
@@ -109,6 +113,7 @@ class loader:
         res = data.sort_values(['num of ratings', 'rating'], ascending=[False, False]).head(20).dropna()
         return res[0:10]
 
+    # Dada uma linguagem apresentam-se todos os filmes que estejam nessa linguagem
     def movie_per_language(self, language, movies_path):
 
         movies_column_names = ['original_title', 'vote_average', language]
@@ -119,4 +124,50 @@ class loader:
         res = movies.dropna().head(10)
         return res
 
+    #se o filme estiver na lista retorna o rating dado pelo utilizador
+    def same_movie(self, movie_id, user_preferences):
+        for pref in user_preferences:
+            if int(pref[1]) == movie_id:
+                return pref[2]
+        return -1
 
+    def best_20Peers(self, userId, users_path, movies_path):
+        column_names = ['userId', 'movieId', 'rating', 'timestamp']
+        movies_column_names = ['movieId', 'original_title']
+        # Preparar os nomes dos utilizadores e os ids
+        user_ratings = pd.read_csv(users_path, sep=",", skiprows=1, names=column_names)
+        user_ratings['rating'] = pd.to_numeric(user_ratings['rating'], errors='coerce')
+        user_ratings['movieId'] = pd.to_numeric(user_ratings['movieId'], errors='coerce')
+        user_preferences = self.user_ratings_loader(userId, users_path)
+        # Preparar filmes para merge
+        movies = pd.read_csv(movies_path, sep=",", usecols=movies_column_names)
+        movies['movieId'] = pd.to_numeric(movies['movieId'], errors='coerce')
+        # Merge
+        data = user_ratings.merge(movies, on='movieId', how='left')
+        # construir o array de proximidade por distancia euclidiana
+        single_users = user_ratings.groupby('userId')
+        distEuc = []
+        recomending_movies = []
+        recmovies = []
+        for id, group in single_users:
+            count = nCount = 0
+            similar_user = -1
+            for idx, ratings in group.iterrows():
+                if similar_user == -1:
+                    similar_user = ratings['userId']
+                r = int(self.same_movie(ratings['movieId'], user_preferences))
+                if (r >= 0): #Se o utilizador viu um mesmo filme que o alvo vou calcular a distancia euclidiana das avaliações
+                    count += abs(r - ratings['rating'])  # distancia euclidiana
+                    nCount += 1
+                else: #se não for um filme já visto pelo utilizador alvo adiciono para poder recomendar
+                    recomending_movies.append((similar_user, ratings[1]))
+            if nCount > 0:
+                distEuc.append((similar_user, count / nCount))
+                print(count)
+                print(nCount)
+                print("\n\n")
+        distEuc.sort(key=lambda tup: tup[1])
+        print(distEuc[1:10])
+        for i in distEuc[:10]:
+            recmovies += tuple(rec for rec in recomending_movies if i[1] == rec[0])
+        return recmovies
