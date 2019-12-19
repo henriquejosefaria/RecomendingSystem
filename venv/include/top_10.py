@@ -31,6 +31,11 @@ def language_filter():
     preferences = l.movie_per_language(language,"movies_metadata.csv")
     print(preferences)
 
+def cold_start():    
+    l = loader()
+    #language = 'English'
+    preferences = l.cold_start(['1','0','0','1','0','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],'movies_metadata.csv')
+    print(preferences[:10])
 
 if __name__ == "__main__":
   main()
