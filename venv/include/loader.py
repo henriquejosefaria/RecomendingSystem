@@ -35,15 +35,16 @@ class loader:
         return a
 
     # comprara igualdade de 2 arrays de inteiros (usado para verificar se dois filmes são compatíveis em gênero)
-    def comparacao_percentual(self, arr1, arr2):
+    def comparacao_percentual(self, array, arr2):
         count1 = 0.0
         countEqual = 0.0
-        for i in range(1, len(arr2)):
+        for i in range(0, len(array)):
             count1 += 1.0
-            if arr1[16 + i] == arr2[i]:
+            if arr2[i] == array[i]:
                 countEqual += 1.0
         if (countEqual / count1) == 1.0: return True
-        return False
+        return False    
+
 
     # Procura os 10 filmes mais bem cotados cujo género seja o mesmo dos filmes vistos pelo utilizador e dos quais este gostou
     def best10_theme_movies(self, movieIds, path):
@@ -62,7 +63,7 @@ class loader:
                         for row2 in reader2:
                             if rowCount == 1:
                                 rowCount += 1
-                            elif self.comparacao_percentual(row2, row[16:36]):  # se tiver os mesmos temas adiciona
+                            elif self.comparacao_percentual(row2[16:36], row[16:36]):  # se tiver os mesmos temas adiciona
                                 films.append((row2[2], row2[13], row2[14]))
         print("\n\n##----------## Removing repeated ##----------##\n\n");
         tam = len(films)
@@ -150,9 +151,10 @@ class loader:
         recomending_movies = []
         recmovies = []
         for id, group in single_users:
-            count = nCount = 0
+            count = nCount = total = 0
             similar_user = -1
             for idx, ratings in group.iterrows():
+                total += 1
                 if similar_user == -1:
                     similar_user = ratings['userId']
                 r = int(self.same_movie(ratings['movieId'], user_preferences))
@@ -161,13 +163,23 @@ class loader:
                     nCount += 1
                 else: #se não for um filme já visto pelo utilizador alvo adiciono para poder recomendar
                     recomending_movies.append((similar_user, ratings[1]))
-            if nCount > 0:
+            if nCount > 0 & total != nCount:
                 distEuc.append((similar_user, count / nCount))
-                print(count)
-                print(nCount)
-                print("\n\n")
         distEuc.sort(key=lambda tup: tup[1])
-        print(distEuc[1:10])
-        for i in distEuc[:10]:
-            recmovies += tuple(rec for rec in recomending_movies if i[1] == rec[0])
+        for (user,drating) in distEuc[:20]:
+            for (user_id,movie_id) in recomending_movies:
+                if user_id == user: recmovies.append(movie_id)
         return recmovies
+
+    def cold_start_users(self,array,path):
+        with open(path, "r") as ifile:
+            reader = csv.reader(ifile, delimiter=",")
+            rowCount = 0; films = []
+            for row in reader:
+                if rowCount == 0:
+                    rowCount += 1
+                elif self.comparacao_percentual_1(array, row[16:36]):  # se tiver os mesmos temas adiciona
+                    films.append((row[2], row[13], row[14]))
+        films.sort(key=lambda tup: tup[2], reverse=True)
+        return films
+
