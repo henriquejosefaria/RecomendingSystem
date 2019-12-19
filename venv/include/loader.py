@@ -44,6 +44,16 @@ class loader:
         if (countEqual / count1) == 1.0: return True
         return False
 
+    def comparacao_percentual_1(self, array, arr2):
+        count1 = 0.0
+        countEqual = 0.0
+        for i in range(0, len(array)):
+            count1 += 1.0
+            if arr2[i] == array[i]:
+                countEqual += 1.0
+        if (countEqual / count1) == 1.0: return True
+        return False    
+    
     def best10_theme_movies(self, movieIds, path):
         with open(path, "r") as ifile:
             reader = csv.reader(ifile, delimiter=",")
@@ -119,4 +129,18 @@ class loader:
         res = movies.dropna().head(10)
         return res
 
-
+    def cold_start(self,array,path):
+        with open(path, "r") as ifile:
+            reader = csv.reader(ifile, delimiter=",")
+            rowCount = 0;
+            passed = True
+            filmes = films = []
+            for row in reader:
+                #print(row)
+                if rowCount == 0:
+                    rowCount += 1
+                elif self.comparacao_percentual_1(array, row[16:36]):  # se tiver os mesmos temas adiciona
+                        #print(row)
+                    films.append((row[2], row[13], row[14]))
+        films.sort(key=lambda tup: tup[2], reverse=True)
+        return films
