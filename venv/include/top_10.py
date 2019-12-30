@@ -1,13 +1,15 @@
 from loader import loader
 
 def main():
-
+    l = loader()
     #top_10()                    #funcional
     #personalized_theam_loader() #funcional
-    users_colab()               #funcional
+    #users_colab()               #funcional
     #language_filter()           #funcional
     #best_20Peers()              #funcional
     #cold_start()                #funcional
+    #new_films_loader()          #funcional
+    l.transfer("small_ratings.csv")
 
 def top_10():
     l = loader()
@@ -45,6 +47,11 @@ def cold_start():
     user_preferences = ['1','0','0','1','0','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1']
     preferences = l.cold_start_users(user_preferences,'movies_metadata.csv')
     print(preferences[:10])
+
+def new_films_loader():
+    l = loader()
+    newfilms = l.new_films_loader('movies_metadata.csv')
+    print(newfilms[:10])
 
 if __name__ == "__main__":
   main()

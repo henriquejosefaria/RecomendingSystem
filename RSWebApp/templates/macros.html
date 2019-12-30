@@ -1,0 +1,11 @@
+{% macro build_site_navigation(pages, selected) %}
+<div class="w-1/4 mr-8">
+    <ul>
+        {% for page in pages %}
+        <a href="{{page.url}}">
+            <li>{{page.name}}</li>
+        </a>
+        {% endfor %}
+    </ul>
+</div>
+{% endmacro %}

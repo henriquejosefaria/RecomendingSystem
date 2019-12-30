@@ -1,7 +1,13 @@
 import csv
 import operator
 import pandas as pd
+from pymongo import MongoClient
+pd.set_option('display.max_columns', None)
+cliente = MongoClient('mongodb://localhost:27017/')
 
+dados = cliente['webAppDB']
+
+filmsList = dados.films
 
 #         adult [0];  "homepage"   [1]; "id"       [2]; "imdb_id" [3]; "original_language"  [4]; "original_title"  [5]; "overview"      [6];"popularity" [7]
 # "poster_path" [8]; "release_date"[9];"runtime"  [10]; "status" [11]; "tagline"           [12]; "title"          [13]; "vote_average" [14];"vote_count" [15]
@@ -134,7 +140,7 @@ class loader:
         allmovies[language] = pd.to_numeric(allmovies[language], errors='coerce')
         movies = allmovies[(allmovies[language] == 1)]
         movies.sort_values('vote_average', ascending=False)
-        res = movies.dropna().head(10)
+        res = movies.dropna()
         return res
 
     #se o filme estiver na lista retorna o rating dado pelo utilizador
@@ -200,3 +206,52 @@ class loader:
             filmes.append(b)
         return filmes
 
+    # NOTA: De futuro atualizar formula e adicionar campo de número de vezes apresentado aos utilizadores.
+    # Quanto mais apresentações deste filme foram feitas a pessoas mais oportunidades elas tiveram para o ver, se não o esclheram não é assim tão atrativo
+    # para além disso filmes novos precisam de aparecer também
+
+    # Carrega os filmes todos dos sem visualizações para o que tem maior número de visualizações
+    def new_films_loader(self,movies_path):
+        movies_column_names = ['original_title', 'vote_count']
+        allmovies = pd.read_csv(movies_path, sep=",", usecols=movies_column_names)
+        allmovies['vote_count'] = pd.to_numeric(allmovies['vote_count'], errors='coerce')
+        movies = allmovies.sort_values(by='vote_count')
+        return movies
+
+    #         adult [0];  "homepage"   [1]; "id"       [2]; "imdb_id" [3]; "original_language"  [4]; "original_title"  [5]; "overview"      [6];"popularity" [7]
+    # "poster_path" [8]; "release_date"[9];"runtime"  [10]; "status" [11]; "tagline"           [12]; "title"          [13]; "vote_average" [14];"vote_count" [15]
+    # "Animation"  [16]; "Adventure"  [17];"Romance"  [18]; "Comedy" [19]; "Action"            [20]; "Family"         [21]; "History"      [22];"Drama"      [23]
+    #  "Crime"     [24]; "Fantasy"    [25];"Si-Fi"    [26];"Thriller"[27]; "Music"             [28]; "Horror"         [29]; "Documentary"  [30];"Mystery"    [31]
+    # "Western"    [32]; "TV Movie"   [33];"War"      [34];"Foreign" [35]; "ColectionId"       [36]; "Colection"      [37]; "English"      [38];"Deutsh"     [39]
+    # "Français"  [40]; "Espanhol"   [41];
+    # "userId", "movieId", "rating", "timestamp"
+    def transfer(self,movies_path):
+        ifile = open(movies_path, "r")
+        users = csv.reader(ifile, delimiter=",")
+        row = 0
+        list = "["
+        id = -1
+        films = ""
+        for user in users:
+            print(user)
+            '''
+            if row == 0:
+                row=0
+            elif id == -1 and row > 0:
+                id = user["userId"]
+                films = "{" + user["movieId"] + "}"
+            elif row == 60:
+                break
+            elif id == user["userId"]:
+                films += ",{" + user["movieId"] + "," + user["rating"] + "}"
+            else:
+                string = "{\"userId\" : " + str(user["userId"]) + ", \"movieId\" :" + str(user["movieId"]),""str(user["movieId"]),""str(user["movieId"]),"","" "}"
+                list += strin g
+                print(string,"\n\n")
+                if (row < 9):
+                    list += ","
+            row += 1
+        list += "]"
+        print(list)
+        filmsList.insert_many(list)
+            '''
