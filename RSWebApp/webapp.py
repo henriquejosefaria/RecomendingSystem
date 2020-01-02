@@ -262,7 +262,8 @@ def basepage():
 @app.route("/rate/<filmId>", methods=['GET','POST'])
 def rate(filmId):
 	this_userId = mongo.db.users.find({"email": user_global_id})
-	return render_template("rate.html", title="Rate",filmId = filmId, userId = this_userId)
+	film = mongo.db.films.find_one({"movieId":int(filmId)})
+	return render_template("rate.html", title="Rate",filmId = filmId, userId = this_userId,film = film)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

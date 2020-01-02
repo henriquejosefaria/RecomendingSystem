@@ -2,18 +2,373 @@
 <head>
 <!-- Font Awesome Icon Library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-.checked {
-  color: orange;
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+
+    <!--mySideBar-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
+    <!--calendar icon-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+        
+        .sidebar {
+            height: 100%;
+            width: 70px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            white-space: nowrap;
+        }
+        
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        /* Style the sidenav links and the dropdown button */
+        .sidenav a, .dropdown-btn {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .sidebar a:hover  {
+            color: #f1f1f1;
+        }
+        .sidenav a:hover, .dropdown-btn:hover {
+            color: #f1f1f1;
+            display: block;
+        }
+
+        /* Add an active class to the active dropdown button */
+        .active {
+            color: white;
+        }
+        /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+        .dropdown-container {
+            display: none;
+            color: #818181;
+            background-color: #222;
+            padding-left: 8px;
+        }
+
+        
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+        
+        .material-icons,
+        .icon-text {
+            vertical-align: middle;
+        }
+        
+        .material-icons {
+            padding-bottom: 3px;
+        }
+        .special {
+        	margin-left: 10px;
+        	background-color: #555;
+        	border-color: #666;
+        	color:white;
+        }
+        .myicon {
+            background: url('calendar.gng');
+            vertical-align: middle;
+            padding-bottom: 3px;
+            /* Other styles here */
+        }
+        
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 100px;
+        }
+
+        div.movies-list-content {
+            padding-left: 100px;
+            overflow: hidden;
+            height: 460px;
+            width: 950px;
+            float: left;
+            position: relative;
+        }
+        div.content-box {
+            width: 880px;
+            height: 40%;
+            margin-top: 10%;
+            margin-left: 10%;
+            background-color: #f4f4f4;
+            border: 1px solid #bdbcbc;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 0 1px 10px -4px #000;
+            -webkit-box-shadow: 0 1px 10px -4px #000;
+            box-shadow: 0 1px 10px -4px #000;
+            overflow: hidden;
+        }
+        div.movie-detailed-info span.genre{
+            float: left;
+            width: 400px;
+            overflow: hidden;
+            font-size: 12px;
+        }
+        div.movie-info {
+            float: left;
+            width: 609px;
+            margin-top: 2px;
+        }
+        div.player-aux {
+            width: 930px;
+            padding: 25px;
+            overflow: hidden;
+        }
+        div.thumb {
+            float: left;
+            width: 160px;
+            overflow: hidden;
+            margin-right: 15px;
+            object-position: center;
+        }
+        div.movie-imdb {
+            float: right;
+            width: 335px;
+            height: 67px;
+            line-height: 67px;
+            padding-left: 40px;
+        }
+        div.imdb-stars {
+            float: left;
+            width: 200px;
+            height: 18px;
+            margin-top: 24px;
+        }
+        div.imdb-rate {
+            float: left;
+            width: 30px;
+            height: 18px;
+            line-height: 20px;
+            margin-left: 10px;
+        }
+        span.full {
+            background-position: -18px 0;
+        }
+        span.half {
+            background-position: -36px 0;
+        }
+        .watch {
+            cursor: pointer;
+            height: 20px;
+            margin-top: 10px;
+            background-color: #DC143C;
+            color: white;
+            text-decoration: none;
+            font-family: Tahoma;
+        }
+        a.movie-name {
+            font-family: 'PTSans Bold',Tahoma;
+            font-size: 20px;
+            color: black;
+            text-decoration: none;
+        }
+        .crop {
+            width: 21px;
+            height: 17px;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+        span.movie-synopsis {
+            float: left;
+            font-family: Tahoma;
+            font-size: 13px;
+            color: #545457;
+            text-shadow: 0 1px #fff;
+            -moz-text-shadow: 0 1px #fff;
+            -webkit-text-shadow: 0 1px #fff;
+            line-height: 18px;
+            margin-bottom: 5px;
+        }
+        a.thumb-aux {
+            float: left;
+            width: 128px;
+            height: 190px;
+            overflow: hidden;
+            background-color: #fff;
+            border: 1px solid #D4D4D4;
+            border-bottom: 1px solid #A7A7A7;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 0 5px 10px -7px #000;
+            -webkit-box-shadow: 0 5px 10px -7px #000;
+            box-shadow: 0 5px 10px -7px #000;
+            padding: 3px;
+        }
+
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        
+        @media screen and (max-height: 450px) {
+            .sidebar {
+                padding-top: 15px;
+            }
+            .sidebar a {
+                font-size: 18px;
+            }
+        }
+    </style>
+
+	{% if title %}
+		<title>RecSys - {{ title }}</title>
+	{% else %}
+		<title>RecSys</title>
+	{% endif %}
+
 </head>
-<body translate="no" style="background-color: #000;">
-<a onmouseover="fill1()"><span id="1star" class="fa fa-star" style="color: white;"></span></a>
-<a onmouseover="fill2()"><span id="2star" class="fa fa-star" style="color: white;"></span></a>
-<a onmouseover="fill3()"><span id="3star" class="fa fa-star" style="color: white;"></span></a>
-<a onmouseover="fill4()"><span id="4star" class="fa fa-star" style="color: white;"></span></a>
-<a onmouseover="fill5()"><span id="5star" class="fa fa-star" style="color: white;"></span></a>
+<body translate="no" style="background-color: #a9b3c2;;">
+	<nav id="nav" class="navbar navbar-expand-lg sticky-top navbar-dark" style="background-color: #111;">
+		<div class="container">
+			<a class="navbar-brand" href="{{ url_for('home') }}" ><strong>RecSys</strong></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('home') }}">Logout</a>
+					</li>
+			</li>
+		</ul>
+		<form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post">
+			<input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		</form>
+	</div>
+<div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
+        <a href="#" class="dropdown-btn" onclick="toggleSubmenu0()"><i class="fa">&#xf073;</i><span class="icon-text">&nbsp;&nbsp;&nbsp;Year<i class="fa fa-caret-down"></i></span></a>
+        <div id="subMenu0" class="dropdown-container" >
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1995') }}">1995</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1996') }}">1996</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1997') }}">1997</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1998') }}">1998</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1999') }}">1999</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2000') }}">2000</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2001') }}">2001</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2002') }}">2002</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2003') }}">2003</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2004') }}">2004</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2005') }}">2005</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2006') }}">2006</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2007') }}">2007</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2008') }}">2008</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2009') }}">2009</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2014') }}">2014</a>
+        </div>
+        <a href="#" class="dropdown-btn" onclick="toggleSubmenu1()"><i class="material-icons">spa</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;Genre<i class="fa fa-caret-down"></i></span></a>
+        <div id="subMenu1" class="dropdown-container">
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Animation') }}">Animation</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Adventure') }}">Adventure</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Romance') }}">Romance</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Comedy') }}">Comedy</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Action') }}">Action</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Family') }}">Family</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='History') }}">History</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Drama') }}">Drama</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Crime') }}">Crime</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Fantasy') }}">Fantasy</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Sience Fiction') }}">Sience Fiction</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Thriller') }}">Thriller</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Music') }}">Music</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Horror') }}">Horror</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Documentary') }}">Documentary</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Mystery') }}">Mystery</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Western') }}">Western</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='TV Movie') }}">TV Movie</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='War') }}">War</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Foreign') }}">Foreign</a>
+        </div>
+        <a href="#" class="dropdown-btn" onclick="toggleSubmenu2()"><i class='fas fa-theater-masks' style='font-size:24px'></i><span class="icon-text"></span>&nbsp;&nbsp;Recomendation<i class="fa fa-caret-down"></i></span></a>
+        <div id="subMenu2" class="dropdown-container">
+          <a style="text-align: center;" href="{{ url_for('top10_avg') }}">Top Rated</a>
+          <a style="text-align: center;" href="{{ url_for('colab_filtering') }}">Similar Users Views</a>
+          <a style="text-align: center;" href="{{ url_for('filmWatchBased') }}">Your Personal List</a>
+          <a style="text-align: center;" href="{{ url_for('memBased') }}">User's Best Rates</a>
+        </div>
+
+        <a href="{{ url_for('contacts') }}"><i class="material-icons">email</i><span class="icon-text"></span >&nbsp;&nbsp;&nbsp;Contacts<span></a>
+		</div>
+	</nav>
+
+<div id="main" class="container">
+            <div id="player-box" class="content-box">
+                <div class="player-aux" style="overflow: visible; padding-bottom: 15px;">
+                <div class="thumb" title="Title" style="display: block;">
+                    <img src="../static/{{film['title']}}.jpg" width="160" height="220" style="margin-top: 10%;">
+                </div>
+                </div>
+                <div class="movie-info">
+                <a class="movie-name">{{film["title"]}}</a>
+                <div class="movie-detailed-info">
+                    <span class="original-name">"{{film["title"]}}"</span>
+                <div class="movie-imdb">
+                	<div>
+						<a onmouseover="fill1()"><span id="1star" class="fa fa-star" style="color: white;font-size: 26px;"></span></a>
+						<a onmouseover="fill2()"><span id="2star" class="fa fa-star" style="color: white;font-size: 26px;"></span></a>
+						<a onmouseover="fill3()"><span id="3star" class="fa fa-star" style="color: white;font-size: 26px;"></span></a>
+						<a onmouseover="fill4()"><span id="4star" class="fa fa-star" style="color: white;font-size: 26px;"></span></a>
+						<a onmouseover="fill5()"><span id="5star" class="fa fa-star" style="color: white;font-size: 26px;"></span></a>
+						<br><br>
+					</div>
+						<div style="display: inline-block;">
+							<button style="border-radius: 7px;margin: 4px 5px;padding: 5px 2px;text-align: center;height: 35px;">SUBMIT</button>
+							<button style="border-radius: 7px;margin: 4px 5px;padding: 5px 2px;text-align: center;height: 35px;">IGNORE</button>
+						</div> 
+                </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+ 
 <script>
 	function fill1(){
 		document.getElementById('1star').class = 'fa fa-star checked';
