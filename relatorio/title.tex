@@ -1,22 +1,31 @@
 
 
-\title{Migração de uma Base de Dados Relacional para três diferentes tipos de Base de Dados}
+\title{Sistema de Recomendação de Filmes}
 
-\author{A82200 - Henrique Faria }
+\author{Adriana Lopes, Diana Carrilho, Henrique Faria, Paulo Barbosa}
 
 
-\institute{Universidade do Minho, Mestrado Integrado em Engenharia Informática }
+\institute{Universidade do Minho, Mestrado Integrado em Engenharia Informática e Mestrado em Matemática e Computação }
 
-\titlerunning{Bases de Dados NoSQL: OracleDB, MongoDB e Neo4J}
+
 
 \maketitle
 
-% Abstract
 \begin{abstract}
+Neste trabalho procedeu-se à construção de um sistema de recomendação iniciando-se com uma introdução ao tema abordado. Seguidamente analisou-se o dataset escolhido e mais tarde foram abordados os seguintes paradigmas: Sistemas baseados em filtros colaborativos (community based recommender systems), Sistemas de Recomendação Baseados em Conteúdo (Content-based recommender systems), Sistemas de Recomendação Baseados em restrições (Restriction- based recommender Systems), Sistemas de Recomendação Baseados em Conhecimento
+(Knowledge-based recommender systems), Sistemas de Recomendação híbridos/Agregados (Hybridand Ensemble-based recommender systems). Por fim, foi implementada uma aplicação web para interagir directamente com os utilizadores de maneira a lhe serem recomendados filmes.\newline
 
-A Base de Dados para qual está direcionada a migração é a Sakila do MySQL.Apartir desta migrar-se-á para outras três base de dados. Explicando o processo , a utilidade e uma breve comparação entre elas.As migrações serão feitas para uma base de dados documental (MongoDB) , para uma base de dados grafica(Neo4j) e para uma Relacional (Oracle).
-
-\keywords{Python \and MySQL \and Oracle \and Mongo \and Neo4J}
+\keywords{Sistemas de Recomendação  \and Filmes }
 \end{abstract}
+
+
+\begin{center}
+\normalsize{\bfseries Introdução}\hfill 
+\end{center}
+
+Os Sistemas de Recomendação surgiram como uma forma de resolver a necessidade de fornecer uma experiência personalizada na Internet a cada utilizador. Estes Sistemas têm como objectivo apresentar a um utilizador produtos que lhe sejam de interesse. 
+O propósito deste trabalho é desenvolver um sistema de recomendação de Filmes, uma vez que foi um dos temas que abordamos no primeiro trabalho prático.
+
+
 \newpage
 
