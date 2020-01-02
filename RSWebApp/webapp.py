@@ -4,6 +4,8 @@ from flask_pymongo import PyMongo
 import os
 import pandas as pd
 from itertools import groupby   
+import webbrowser
+from flask_jsglue import *
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/webAppDB"
@@ -224,6 +226,7 @@ def search():
 				films = mongo.db.films.find({"original_language": {"$regex": text}})
 				return render_template("personalHome.html", title="personalHome",films = films[:15])
 			else:
+				films = loadNew()
 				return render_template("personalHome.html", title="personalHome",films = [])
 		else:
 			if mongo.db.films.find({"title": {"$regex": text}}).count() > 0:
@@ -239,10 +242,27 @@ def search():
 				films = mongo.db.films.find({"original_language": {"$regex": text}})
 				return render_template("personalHome.html", title="personalHome",films = films[:15])
 			else:
+				films = loadNew()
 				return render_template("personalHome.html", title="personalHome",films = [])
 	else:
+		films = loadNew()
 		return render_template("personalHome.html", title="personalHome",films = [])
 
+@app.route("/contacts", methods=['GET','POST'])
+def contacts():
+	return render_template("contacts.html", title="Contacts")
+
+
+@app.route("/homepage", methods=['GET','POST'])
+def basepage():
+	submitScore()
+	films = loadNew()
+	return render_template("personalHome.html", title="personalHome",films = films)
+
+@app.route("/rate/<filmId>", methods=['GET','POST'])
+def rate(filmId):
+	this_userId = mongo.db.users.find({"email": user_global_id})
+	return render_template("rate.html", title="Rate",filmId = filmId, userId = this_userId)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -295,10 +315,6 @@ def register():
 		films = loadNew()
 		return render_template("personalHome.html", title="personalHome",films = films)
 	return render_template('register.html', title='Register', form=form)
-
-@app.route("/about")
-def about():
-	return render_template("about.html")
 
 if __name__ == "__main__":
 	app.run(debug=True)
