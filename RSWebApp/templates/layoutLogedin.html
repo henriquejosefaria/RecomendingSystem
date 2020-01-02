@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
     <!--calendar icon-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
     <style>
         body {
@@ -25,7 +26,7 @@
         
         .sidebar {
             height: 100%;
-            width: 80px;
+            width: 70px;
             position: fixed;
             z-index: 1;
             top: 0;
@@ -127,6 +128,7 @@
         div.content-box {
             width: 980px;
             background-color: #f4f4f4;
+            border: 1px solid #bdbcbc;
             border-radius: 5px;
             -moz-border-radius: 5px;
             -webkit-border-radius: 5px;
@@ -157,13 +159,13 @@
             width: 136px;
             overflow: hidden;
             margin-right: 15px;
+            object-position: center;
         }
         div.movie-imdb {
             float: right;
             width: 335px;
             height: 67px;
             line-height: 67px;
-            
             padding-left: 40px;
         }
         div.imdb-stars {
@@ -176,7 +178,7 @@
             float: left;
             width: 30px;
             height: 18px;
-            line-height: 67px;
+            line-height: 20px;
             margin-left: 10px;
         }
         span.full {
@@ -185,8 +187,15 @@
         span.half {
             background-position: -36px 0;
         }
-
-
+        .watch {
+            cursor: pointer;
+            height: 20px;
+            margin-top: 10px;
+            background-color: #DC143C;
+            color: white;
+            text-decoration: none;
+            font-family: Tahoma;
+        }
         a.movie-name {
             font-family: 'PTSans Bold',Tahoma;
             font-size: 20px;
@@ -209,6 +218,22 @@
             -webkit-text-shadow: 0 1px #fff;
             line-height: 18px;
             margin-bottom: 5px;
+        }
+        a.thumb-aux {
+            float: left;
+            width: 128px;
+            height: 190px;
+            overflow: hidden;
+            background-color: #fff;
+            border: 1px solid #D4D4D4;
+            border-bottom: 1px solid #A7A7A7;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 0 5px 10px -7px #000;
+            -webkit-box-shadow: 0 5px 10px -7px #000;
+            box-shadow: 0 5px 10px -7px #000;
+            padding: 3px;
         }
 
 
@@ -248,13 +273,10 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ url_for('home') }}">Logout</a>
 					</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('about') }}">About</a>
-				</li>
 			</li>
 		</ul>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+		<form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post">
+			<input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 		</form>
 	</div>
@@ -263,28 +285,57 @@
 
 
 <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
-        <a href="#" class="dropdown-btn" onclick="toggleSubmenu0()"><i style="font-size:30px" class="fa">&#xf073;</i><span class="icon-text">&nbsp;&nbsp;&nbsp;&nbsp;Ano<i class="fa fa-caret-down"></i></span></a>
-        <div id="subMenu0" class="dropdown-container" onmouseout="function(){open=true;}">
+        <a href="#" class="dropdown-btn" onclick="toggleSubmenu0()"><i class="fa">&#xf073;</i><span class="icon-text">&nbsp;&nbsp;&nbsp;Year<i class="fa fa-caret-down"></i></span></a>
+        <div id="subMenu0" class="dropdown-container" >
           <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1995') }}">1995</a>
           <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1996') }}">1996</a>
           <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1997') }}">1997</a>
           <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1998') }}">1998</a>
           <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='1999') }}">1999</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2000') }}">2000</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2001') }}">2001</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2002') }}">2002</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2003') }}">2003</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2004') }}">2004</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2005') }}">2005</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2006') }}">2006</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2007') }}">2007</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2008') }}">2008</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2009') }}">2009</a>
+          <a id="child1" style="text-align: center;" href="{{ url_for('yearSearch', year='2014') }}">2014</a>
         </div>
-        <a href="#" class="dropdown-btn" onclick="toggleSubmenu1()"><i class="material-icons">spa</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;Gênero<i class="fa fa-caret-down"></i></span></a>
+        <a href="#" class="dropdown-btn" onclick="toggleSubmenu1()"><i class="material-icons">spa</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;Genre<i class="fa fa-caret-down"></i></span></a>
         <div id="subMenu1" class="dropdown-container">
-          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='accao') }}">Acção</a>
-          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='aventura') }}">Aventura</a>
-          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='comedia') }}">etc</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Animation') }}">Animation</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Adventure') }}">Adventure</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Romance') }}">Romance</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Comedy') }}">Comedy</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Action') }}">Action</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Family') }}">Family</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='History') }}">History</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Drama') }}">Drama</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Crime') }}">Crime</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Fantasy') }}">Fantasy</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Sience Fiction') }}">Sience Fiction</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Thriller') }}">Thriller</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Music') }}">Music</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Horror') }}">Horror</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Documentary') }}">Documentary</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Mystery') }}">Mystery</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Western') }}">Western</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='TV Movie') }}">TV Movie</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='War') }}">War</a>
+          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='Foreign') }}">Foreign</a>
         </div>
-        <a href="#" class="dropdown-btn" onclick="toggleSubmenu2()"><i class="material-icons">spa</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;Gênero<i class="fa fa-caret-down"></i></span></a>
+        <a href="#" class="dropdown-btn" onclick="toggleSubmenu2()"><i class='fas fa-theater-masks' style='font-size:24px'></i><span class="icon-text"></span>&nbsp;&nbsp;Recomendation<i class="fa fa-caret-down"></i></span></a>
         <div id="subMenu2" class="dropdown-container">
           <a style="text-align: center;" href="{{ url_for('top10_avg') }}">Top Rated</a>
-          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='aventura') }}">Aventura</a>
-          <a style="text-align: center;" href="{{ url_for('genreSearch', genre='comedia') }}">etc</a>
+          <a style="text-align: center;" href="{{ url_for('colab_filtering') }}">Similar Users Views</a>
+          <a style="text-align: center;" href="{{ url_for('filmWatchBased') }}">Your Personal List</a>
+          <a style="text-align: center;" href="{{ url_for('memBased') }}">User's Best Rates</a>
         </div>
 
-        <a href="#"><i class="material-icons">email</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;Contactos<span></a>
+        <a href="#"><i class="material-icons">email</i><span class="icon-text"></span >&nbsp;&nbsp;&nbsp;Contacts<span></a>
 </div>
 
 
@@ -304,6 +355,10 @@
                 <div class="player-aux" style="overflow: visible; padding-bottom: 15px;">
                 <div class="thumb" title="Title" style="display: block;">
                     <img src="../static/{{film['title']}}.jpg" width="150" height="200">
+                    <a class="thumb-aux" style="cursor:pointer;height: 30px;margin-top: 10px; margin-bottom: 10px; background: linear-gradient(#e52d27,#b31217 100%);color: white;text-decoration: none;font-family: Tahoma;">
+                        <center style="font-family: 'PTSans Bold',Tahoma;"> WATCH <img src="../static/play2.jpg" style=" width: 20px;height: 20px;margin-left: 10px; margin-bottom: 3px; border-radius: 15px;">
+                        </center>
+                    </a>
                 </div>
                 </div>
                 <div class="movie-info">
@@ -313,64 +368,64 @@
                     <div class="detailed-aux" style="line-height: 18px;width:100%;">
                         <span class="genre">
                             {%if film["Animation"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Animação </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Animation; </a>
                             {% endif %}
                             {%if film["Adventure"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Aventura </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Adventure; </a>
                             {% endif %}
                             {%if film["Romance"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Romance </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Romance; </a>
                             {% endif %}
                             {%if film["Comedy"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Comédia </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Comedy; </a>
                             {% endif %}
                             {%if film["Action"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Ação </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Action; </a>
                             {% endif %}
                             {%if film["Family"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Familia </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Family; </a>
                             {% endif %}
                             {%if film["History"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">História </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">History; </a>
                             {% endif %}
                             {%if film["Drama"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Drama </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Drama; </a>
                             {% endif %}
                             {%if film["Crime"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Crime </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Crime; </a>
                             {% endif %}
                             {%if film["Fantasy"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Fantasia </a>
-                            {% endif %}
-                            {%if film["Thriller"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Suspense </a>
-                            {% endif %}
-                            {%if film["Music"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Música </a>
-                            {% endif %}
-                            {%if film["Horror"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Horror </a>
-                            {% endif %}
-                            {%if film["Documentary"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Documentário </a>
-                            {% endif %}
-                            {%if film["Mystery"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Mistério </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Fantasy; </a>
                             {% endif %}
                             {%if film["Si-Fi"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Si-Fi </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Sience Fiction; </a>
+                            {% endif %}
+                            {%if film["Thriller"] == 1 %}
+                            <a style="color: #4282A8;text-decoration: inherit;">Thriller; </a>
+                            {% endif %}
+                            {%if film["Music"] == 1 %}
+                            <a style="color: #4282A8;text-decoration: inherit;">Music; </a>
+                            {% endif %}
+                            {%if film["Horror"] == 1 %}
+                            <a style="color: #4282A8;text-decoration: inherit;">Horror; </a>
+                            {% endif %}
+                            {%if film["Documentary"] == 1 %}
+                            <a style="color: #4282A8;text-decoration: inherit;">Documentary; </a>
+                            {% endif %}
+                            {%if film["Mystery"] == 1 %}
+                            <a style="color: #4282A8;text-decoration: inherit;">Mystery; </a>
                             {% endif %}
                             {%if film["Western"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Oeste </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Western; </a>
                             {% endif %}
                             {%if film["TV Movie"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Filme Televisivo </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">TV Movie; </a>
                             {% endif %}
                             {%if film["War"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Guerra </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">War; </a>
                             {% endif %}
                             {%if film["Foreign"] == 1 %}
-                            <a style="color: #4282A8;text-decoration: inherit;">Estrangeiro </a>
+                            <a style="color: #4282A8;text-decoration: inherit;">Foreign; </a>
                             {% endif %}
                         </span>
                         <span>{{film["release_date"]}}</span>
@@ -392,7 +447,10 @@
                 <div class="movie-imdb">
                     <div class="imdb-stars">
                         <div class="imdb-rate">
-                            <span> Pontuação:&nbsp;{{film["vote_average"]}}/10 </span>
+                            <span style="font-size: 18px;"> IMDB&nbsp;Score:&nbsp;{{film["vote_average"]}}/10 </span>
+                            {% if ratings %}
+                                <span style="font-size: 18px;"> Users&nbsp;Score:&nbsp;{{ratings[loop.index]}}/5 </span>
+                            {% endif %}
                         </div>
                     </div>    
                 </div>
@@ -458,14 +516,14 @@
         function toggleSidebar() {
             if (mini) {
                 console.log("opening sidebar");
-                document.getElementById("mySidebar").style.width = "220px";
-                document.getElementById("main").style.marginLeft = "220px";
+                document.getElementById("mySidebar").style.width = "290px";
+                document.getElementById("main").style.marginLeft = "290px";
                 this.mini = false;
             } else {
                 var elem = document.getElementById("mySidebar");
                 var mouseFora = !$(elem).is(":hover");
                 console.log("closing sidebar");
-                document.getElementById("mySidebar").style.width = "75px";
+                document.getElementById("mySidebar").style.width = "70px";
                 document.getElementById("main").style.marginLeft = "100px";
                 if (mouseFora) {
                     console.log("closing submenu0/1/2");
