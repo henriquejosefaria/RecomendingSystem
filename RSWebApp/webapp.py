@@ -6,6 +6,7 @@ import pandas as pd
 from itertools import groupby   
 import webbrowser
 from flask_jsglue import *
+import time
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/webAppDB"
@@ -23,17 +24,28 @@ def home():
 def personalHome():
 	return render_template("personalHome.html", title="personalHome")
 
+
+'''
+Films Cold-Start Case
+'''
+def filmsColdCases():
+	films = mongo.db.films.find().sort([("vote_count",1), ("release_date",-1)])
+	res = []
+	for f in films:
+		if not isinstance(f["title"], int):
+			res += mongo.db.films.find(f)
+	for f in res[:15]:
+		mongo.db.films.update_one(f,{"$inc": { "vote_count": 1 }} )
+	return res[:15]
+
+
 def autenticate(email,password,form):
 	global user_global_id
 	if mongo.db.users.find({"email" : email, "password" : password}).count() > 0:
 		flash('You have been logged in!', 'success')
 		user_global_id = email
-		films = mongo.db.films.find().sort([("vote_count",-1), ("release_date",-1)])
-		res = []
-		for f in films:
-			if not isinstance(f["title"], int):
-				res += mongo.db.films.find(f)
-		return render_template("personalHome.html", title="personalHome",films = res[:10])
+		films = filmsColdCases()
+		return render_template("personalHome.html", title="personalHome",films = films)
 	else:
 	    flash('Login unsuccessful. Please check credentials.', 'danger')
 	return render_template('login.html', title='Login', form=form)
@@ -47,7 +59,7 @@ def top10_avg():
 	res = []
 	for f in films:
 		if not isinstance(f["title"], int):
-			res += mongo.db.films.find(f)
+			res += f
 	return render_template("personalHome.html", title="personalHome",films = res[:10])
 
 '''
@@ -72,7 +84,7 @@ def colab_filtering():
 	for s in similar:
 			s["dif"] = abs(mv["rating"] - s["rating"])
 	df = pd.DataFrame(similar)
-	new = df.groupby(['userId'], as_index=False)["dif"].sum().to_dict('r')
+	new = df.groupby(['userId'], as_index=False)["dif"].mean().to_dict('r')
 	similar2 = sorted(new,key=lambda x: x['dif'])
 	#Lista dos filmes vistos pelos 10 utilizadores mais parecidos
 	for s in similar2:
@@ -82,7 +94,7 @@ def colab_filtering():
 		elif ten > 10:
 			break
 		elif user_id != row:
-			filmes = mongo.db.userRating.find({"userId": row,"movieId": {"$lt":1000}},{"movieId":1,"_id":0}).limit(15)
+			filmes = mongo.db.userRating.find({"userId": row,"movieId": {"$lt":1000},"rating": {"$gt":2.5}},{"movieId":1,"_id":0}).limit(15)
 			for f in filmes:
 					film = mongo.db.films.find({"movieId": f["movieId"]})
 					if film != None:
@@ -106,29 +118,15 @@ def colab_filtering():
 	return render_template("personalHome.html", title="personalHome",films = res[:15])
 
 '''
-Métodos Baseados em Memória
-Filtros Colaborativos Baseados em itens
+Filmes mais bem cotados por todos os users
 '''
 @app.route("/mem_based", methods=['GET', 'POST'])
 def memBased():
 	best15 = mongo.db.userRating.find({"movieId": {"$lt": 1000}},{"movieId":1,"rating":1,"_id":0}).sort([("rating",-1)]).limit(15)
-	res = []
 	ratings = []
 	for movie in best15:
 		ratings.append(movie["rating"])
-		res += mongo.db.films.find({"movieId": movie["movieId"]})
-	return render_template("personalHome.html", title="personalHome",films = res[:15],ratings = ratings)
-
-'''
-Films Cold-Case Start
-'''
-def loadNew():
-	films = mongo.db.films.find({"userId": {"$in":[1,10]}})
-	res = []
-	for f in films:
-		if not isinstance(f["title"], int):
-			res += f
-	return res[:15]
+	return render_template("personalHome.html", title="personalHome",films = best15[:15],ratings = ratings)
 
 '''
 Sistemas de Recomendação Baseados em Conteúdo
@@ -213,39 +211,22 @@ def search():
 			if mongo.db.films.find({"adult": {"$regex": text}}).count() > 0:
 				films = mongo.db.films.find({"title": {"$regex": text}})
 				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			elif mongo.db.films.find({"title": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"title": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			elif mongo.db.films.find({"original_title": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"original_title": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			elif mongo.db.films.find({"tagline": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"tagline": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			elif mongo.db.films.find({"original_language": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"original_language": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			else:
-				films = loadNew()
-				return render_template("personalHome.html", title="personalHome",films = [])
 		else:
+			films = []
 			if mongo.db.films.find({"title": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"title": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			elif mongo.db.films.find({"original_title": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"original_title": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			elif mongo.db.films.find({"tagline": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"tagline": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			elif mongo.db.films.find({"original_language": {"$regex": text}}).count() > 0:
-				films = mongo.db.films.find({"original_language": {"$regex": text}})
-				return render_template("personalHome.html", title="personalHome",films = films[:15])
-			else:
-				films = loadNew()
-				return render_template("personalHome.html", title="personalHome",films = [])
+				films += mongo.db.films.find({"title": {"$regex": text}})	
+			elif len(films) < 15 and mongo.db.films.find({"original_title": {"$regex": text}}).count() > 0:
+				films += mongo.db.films.find({"original_title": {"$regex": text}})
+			if len(films) < 15 and mongo.db.films.find({"tagline": {"$regex": text}}).count() > 0:
+				films += mongo.db.films.find({"tagline": {"$regex": text}})
+			if len(films) < 15 and mongo.db.films.find({"original_language": {"$regex": text}}).count() > 0:
+				films += mongo.db.films.find({"original_language": {"$regex": text}})
+			if len(films) == 0 :
+				flash('We haven\'t found the film you wanted!', 'fail')
+				films += top10_avg()
+			return render_template("personalHome.html", title="personalHome",films = [])
 	else:
-		films = loadNew()
+		films = filmsColdCases()
 		return render_template("personalHome.html", title="personalHome",films = [])
 
 @app.route("/contacts", methods=['GET','POST'])
@@ -256,14 +237,29 @@ def contacts():
 @app.route("/homepage", methods=['GET','POST'])
 def basepage():
 	submitScore()
-	films = loadNew()
+	films = filmsColdCases()
 	return render_template("personalHome.html", title="personalHome",films = films)
 
 @app.route("/rate/<filmId>", methods=['GET','POST'])
 def rate(filmId):
-	this_userId = mongo.db.users.find({"email": user_global_id})
 	film = mongo.db.films.find_one({"movieId":int(filmId)})
-	return render_template("rate.html", title="Rate",filmId = filmId, userId = this_userId,film = film)
+	print("\n\nRATE\n\n")
+	print("filmId=",filmId)
+	return render_template("rate.html", title="Rate",filmId = filmId,film = film)
+
+@app.route("/submit/<filmId>", methods=['GET','POST'])
+def submit(filmId):
+	films = filmsColdCases()
+	if request.method == 'POST': 
+		value = request.form['star']
+		if value == 0:
+			flash('Submission not concluded u must select a rating!', 'fail')
+			return render_template("personalHome.html", title="personalHome",films = films)
+		this_userId = mongo.db.users.find_one({"email": user_global_id})
+		user_id = this_userId["id"]
+		mongo.db.userRating.insert({"userId": user_id, "movieId" : int(filmId), "rating" : int(value), "timestamp" :time.time()})
+		return render_template("personalHome.html", title="personalHome",films = films)
+	return render_template("personalHome.html", title="personalHome",films = films)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

@@ -1,40 +1,53 @@
 \section{Descrição do dataset escolhido}
 
-O \textit{dataset} escolhido para este trabalho foi obtido através do \textit{Kaggle} e é composto por dois ficheiros, sendo um "movies\_metadata" contendo informação de vários filmes diferentes e o outro "small\_ratings" contendo as avaliações de cada utilizador a cada filme que viu. \\
+O \textit{dataset} escolhido é composto por dois ficheiros, "movies\_metadata" e "small\_ratings". \newline
 
-O "movies\_dataset"  é composto pelos seguintes atributos:
+\par O "movies\_dataset", guarda informações sobre cada filme usando os seguintes atributos:
 
 \begin{itemize}
     \item \textbf{adult:} Carateriza se um filme é para maiores de 18 anos;
-    \item \textbf{homepage:} Link para comprar o filme;
-    \item \textbf{movieId:} Identificação do filme;
+    \item \textbf{homepage:} Link para a página oficial do filme;
+    \item \textbf{movieId:} Identificação do filme na base de dados;
     \item \textbf{imdb\_id:} Identificação do filme no IMDB;
     \item \textbf{original\_language:} Língua do filme;
     \item \textbf{original\_title:} Titulo do filme na língua original;
     \item \textbf{overview:} Resumo do filme;
     \item \textbf{popularity:} Popularidade do filme;
     \item \textbf{poster\_path:} Imagem do filme;
-    \item \textbf{release\_date:} Data da realização do filme;
+    \item \textbf{release\_date:} Data da lançamento do filme;
     \item \textbf{runtime:} Duração do filme;
-    \item \textbf{status:} Estado do filme;
-    \item \textbf{tagline:} Slogan do filme;
+    \item \textbf{status:} Estado de lançamento do filme;
+    \item \textbf{tagline:} Frase icónica do filme;
     \item \textbf{title:} Titulo do filme traduzido para inglês;
     \item \textbf{vote\_average:} Cotação média do filme;
-    \item \textbf{vote\_count:} Soma de todas as cotações do filme;
-    \item \textbf{Animatition,...,Foreign:} Géneros dos filmes contendo 1 se for desse género e 0 senão (coluna 16 à 35);
-    \item \textbf{ColectionId:} Identificação da coluna;
+    \item \textbf{vote\_count:} Número de votações a que o filme foi sujeito;
+    \item \textbf{Animatition,...,Foreign:} Géneros dos filmes, o filme pertence a um género se estives identificado com 1 nessa coluna, 0 caso contrário (colunas 16 à 35);
+    \item \textbf{ColectionId:} Identificação da coleção;
     \item \textbf{Colection:} Coleção à qual um filme pertence;
-    \item \textbf{English, Deutsh, Français, Espanhol:} Preenchido com 1 se o filme tiver versão com cada uma destas línguas e 0 senão.
+    \item \textbf{English, Deutsh, Français, Espanhol:} Caso o filme tenha sido traduzido para uma lingua este é identificado com 1 na respetiva coluna, 0 caso contrário.
     \end{itemize}
-    
-O "small\_ratings"  é composto pelos seguintes atributos:
+Este dataSet dará origem á coleção films na base de dados Mongo.    
+
+\par O "small\_ratings" guarda as avaliações dos utilizadores face aos filmes vistos e é composto pelos seguintes atributos:
 
 \begin{itemize}
     \item \textbf{userID:} Identificação do utilizador;
     \item \textbf{movieId:} Identificação do filme;
-    \item \textbf{rating:} Cotação que um utilizador deu a um determinado filme;
+    \item \textbf{rating:} Cotação que o utilizador deu ao filme;
     \item \textbf{timestamp:} Data da cotação.
 \end{itemize}
+Este dataSet dará origem á coleção userRating na base de dados Mongo.    
 
+
+\par Para além destes datasets foi criado um chamado users que contem as informações da conta de cada utilizador.
+
+\begin{itemize}
+    \item \textbf{id:} Identificação do utilizador;
+    \item \textbf{username:} Nome do utilizador;
+    \item \textbf{email:} Email do utilizador;
+    \item \textbf{password:} Password do utilizador;
+\end{itemize}
+
+Este dataSet dará origem á coleção users na base de dados Mongo.    
 
 \newpage
