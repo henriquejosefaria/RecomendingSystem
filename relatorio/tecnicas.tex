@@ -20,7 +20,7 @@ O método que realiza este filtro chama-se \textit{colab\_filtering()}, de segui
 Neste método, a primeira coisa a fazer é recolher os documentos com as avaliações do utilizador aos filmes por ele vistos. Nesta fase o utilizador pode não ter visto filmes ainda e solicitar o filtro colaborativo, neste caso esta função retorna-lhe os filmes mais bem cotados pelo IMDB (que têm mais chances de ser do intresse do utilizador).
 \par Caso o utilizador já tenha visto um ou mais filmes estes são recolhidos e são procurados na base de dados documentos de outros utilizadores que tenham visto os mesmos filmes,sendo estes guardados num array. De seguida este array é percorrido e é calculada a diferença entre as avaliações de cada utilizador e o nosso alvo, guardando-as numa coluna extra.
 Após este processo é calculada a média das diferenças por utilizador e o array resultante com duas posições (id utilizador, diferença) é ordenado por ordem crescente de diferença.
-Por fim basta procurar quais os filmes avaliados por cada utilizador, percorrendo o array de utilizadores semelhantes, dos quais estes gostaram tendo o cuidado de não inserir filmes repetidos ou que o alvo já tenha visto.
+Por fim, basta procurar quais os filmes avaliados por cada utilizador, percorrendo o array de utilizadores semelhantes, dos quais estes gostaram tendo o cuidado de não inserir filmes repetidos ou que o alvo já tenha visto.
 
 \subsection{Sistemas baseados em conteúdo}
 
