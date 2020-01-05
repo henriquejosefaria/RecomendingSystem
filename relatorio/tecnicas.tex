@@ -34,7 +34,7 @@ O método para realizar esta abordagem chama-se \textit{filmWatchBased()}, de se
 \label {fig02}
 \end{figure}
 
-Este método começa por reunir da coleção userRatings todos os ids dos filmes avaliados de forma positiva pelo utilizador(rating >= 3). De seguida são reunidos os gêneros desse filmes e é feita uma busca na coleção films por esse mesmos géneros. Para cada gênero são colecionados 2 filmes até um máximo de 15 filmes ou até não haver mais gêneros para procurar.
+Este método começa por reunir da coleção userRatings todos os ids dos filmes avaliados de forma positiva pelo utilizador(rating >= 3). De seguida são reunidos os géneros desses filmes e é feita uma busca na coleção films por esse mesmos géneros. Para cada género são colecionados 2 filmes até um máximo de 15 filmes ou até não haver mais géneros para procurar.
 
 
 \subsection{Sistemas baseados em conhecimento}
@@ -54,7 +54,7 @@ O método encarregue desta busca chama-se \textit{search()}, de seguida apresent
 \label {fig03}
 \end{figure}
  
-Este método começa por verificar se foi chamado por um método \textit{POST} se não foi retorna o método \textit{filmsColdCases()} descrito na próxima subsecção. Caso tal não ocorra este verificará se se trata de um gênero e se se tratar retorna os primeiros 15 filmes escontrados por ele, caso não se trate verifica se a palavra inserida foi "True" ou "False", caso tenha sido realiza uma busca única para verificar se se trata de um filme adulto ou não. Se nenhuma das opções acima descritas foi seguida passamos para uma busca por titulo ou título original, por tagline, por linguagem original e por fim caso não tenhamos resultados suficientes (filmes encontrados == 0), realizamos uma busca pelos 10 melhores filmes e imprimimos uma mensagem a dizer que não encontramos os resultados pretendidos e apresentamos alternativas. 
+Este método começa por verificar se foi chamado por um método \textit{POST} se não foi retorna o método \textit{filmsColdCases()} descrito na próxima subsecção. Caso tal não ocorra este verificará se se trata de um género e se se tratar retorna os primeiros 15 filmes escontrados por ele, caso não se trate verifica se a palavra inserida foi "True" ou "False", caso tenha sido realiza uma busca única para verificar se se trata de um filme adulto ou não. Se nenhuma das opções acima descritas foi seguida passamos para uma busca por titulo ou título original, por tagline, por linguagem original e por fim caso não tenhamos resultados suficientes (filmes encontrados == 0), realizamos uma busca pelos 10 melhores filmes e imprimimos uma mensagem a dizer que não encontramos os resultados pretendidos e apresentamos alternativas. 
 
 
 \subsection{Extras}
@@ -85,7 +85,7 @@ Esta subsecção serve para apresentar alguns métodos úteis disponibilizados p
 
 \subsubsection{Best Rated Films by Users}
 
-\par Se o utilizador quiser ver o que outros utilizadores acham interessante, pode faze-lo graças ao método \textit{memBased()}, este método é útil em situações em que por exemplo o utilizador nunca tenha visto filmes de Drama na plataforma embora goste deles, desta forma caso outros utilizadores tenham visto e dado boa pontuação a filmes deste genero o utilizador pode obter uma excelente recomendação e ao ver esse filme cria uma ponte de ligação entre os seus gostos e os dos utilizadores usados para a recomendação.
+\par Se o utilizador quiser ver o que outros utilizadores acham interessante, pode fazê-lo graças ao método \textit{memBased()}, este método é útil em situações em que por exemplo o utilizador nunca tenha visto filmes de Drama na plataforma embora goste deles, desta forma caso outros utilizadores tenham visto e dado boa pontuação a filmes deste género o utilizador pode obter uma excelente recomendação e ao ver esse filme cria uma ponte de ligação entre os seus gostos e os dos utilizadores usados para a recomendação.
 
 \begin{figure}[H]
 \centering
